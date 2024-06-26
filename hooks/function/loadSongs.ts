@@ -50,8 +50,12 @@ const readFiles = async (config: Config) => {
                     duration: file.duration,
                     uri: file.uri,
                     id: file.id,
-                    title: file.filename.replace(/\..*$/, ''), // Elimina la extensión del archivo para obtener el título
+                    title: file.filename
+                        .replace(/\..*$/, '')
+                        .trim()
+                        .replaceAll('_', ' '), // Elimina la extensión del archivo para obtener el título
                     artist: '<unknown>',
+                    creationTime: file.creationTime,
                 });
             }
         });
@@ -69,13 +73,20 @@ const readMappedSongs = async (): Promise<Map<string, Song>> => {
 
         if (!songCachedFile) {
             return songsMap;
-        } 
+        }
 
         songCachedFile
             .split('\n')
             .map((song) => {
-                const [filename, duration, uri, id, title, artist] =
-                    song.split(',');
+                const [
+                    filename,
+                    duration,
+                    uri,
+                    id,
+                    title,
+                    artist,
+                    creationTime,
+                ] = song.split(',');
                 return {
                     filename,
                     duration: Number(duration),
@@ -83,6 +94,7 @@ const readMappedSongs = async (): Promise<Map<string, Song>> => {
                     id,
                     title,
                     artist,
+                    creationTime: Number(creationTime),
                 } as Song;
             })
             .forEach((song) => {
