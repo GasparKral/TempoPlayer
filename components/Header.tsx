@@ -1,47 +1,67 @@
-import { Button, ScrollView } from 'react-native';
+import { Button, View, TouchableWithoutFeedback } from 'react-native';
 import { useGlobalStore } from '@stores/useGlobalStore';
 
+import Color from 'color';
 import Constants from 'expo-constants';
+import SettingsIcon from 'assets/settings.svg';
 
 export const Header = () => {
-    const { setCurrentPage, currentPage } = useGlobalStore();
+    const { setCurrentPage, currentPage, config } = useGlobalStore();
 
     return (
-        <ScrollView
-            scrollEnabled={true}
-            horizontal={true}
-            contentContainerStyle={{
+        <View
+            style={{
                 backgroundColor: '#1c1c1c',
-                padding: 10,
-                marginBottom: 10,
+
                 paddingTop: Constants.statusBarHeight + 10,
+                paddingBottom: 10,
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
-                columnGap: 20,
-                height: Constants.statusBarHeight + 56,
+                alignItems: 'center',
+                borderBottomColor: config.mainColor,
+                borderBottomWidth: 1,
+                height: Constants.statusBarHeight + 57,
+                top: 0,
+                zIndex: 10,
             }}
         >
             <Button
-                color={currentPage === 'songs' ? '#005AFF' : '#3e6dc2'}
+                color={
+                    currentPage === 'songs'
+                        ? config.mainColor
+                        : Color(config.mainColor).desaturate(0.5).toString()
+                }
                 onPress={() => setCurrentPage('songs')}
                 title='Canciones'
             />
 
             <Button
-                color={currentPage === 'playlists' ? '#005AFF' : '#3e6dc2'}
+                color={
+                    currentPage === 'playlists'
+                        ? config.mainColor
+                        : Color(config.mainColor).desaturate(0.5).toString()
+                }
                 onPress={() => setCurrentPage('playlists')}
                 title='Playlists'
             />
             <Button
-                color={currentPage === 'artists' ? '#005AFF' : '#3e6dc2'}
+                color={
+                    currentPage === 'artists'
+                        ? config.mainColor
+                        : Color(config.mainColor).desaturate(0.5).toString()
+                }
                 onPress={() => setCurrentPage('artists')}
                 title='Artistas'
             />
-            <Button
-                color={currentPage === 'config' ? '#005AFF' : '#3e6dc2'}
-                onPress={() => setCurrentPage('config')}
-                title='Configuración'
-            />
-        </ScrollView>
+            <TouchableWithoutFeedback onPress={() => setCurrentPage('config')}>
+                <SettingsIcon
+                    width={24}
+                    height={24}
+                    color={
+                        currentPage === 'config' ? config.mainColor : '#fafafa'
+                    }
+                />
+            </TouchableWithoutFeedback>
+        </View>
     );
 };
