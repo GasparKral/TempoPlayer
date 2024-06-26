@@ -1,12 +1,13 @@
 import type { Song } from 'types/Song';
 
-import { TouchableOpacity, Text, View, Image } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import { timeFormat } from '@hooks/function/timeFormat';
 import { useGlobalStore } from '@stores/useGlobalStore';
 
+import MusicIcon from 'assets/music.svg';
 
 export const SongItem = ({ song }: { song: Song }) => {
-    const { action } = useGlobalStore();
+    const { action, config } = useGlobalStore();
 
     return (
         <TouchableOpacity
@@ -17,28 +18,41 @@ export const SongItem = ({ song }: { song: Song }) => {
                 borderRadius: 10,
                 borderWidth: 1,
                 borderColor: 'transparent',
-                height: 100,
+                height: 80,
                 flexDirection: 'row',
                 gap: 10,
                 overflow: 'hidden',
             }}
         >
-            <Image
-                source={require('assets/noImageLogo.webp')}
+            <View
                 style={{
                     aspectRatio: 1,
                     borderRadius: 7,
-                    width: 80,
+                    width: 60,
                     backgroundColor: '#1c1c1c',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
-            />
-            <View>
+            >
+                <MusicIcon
+                    width={60}
+                    height={60}
+                    color={config.mainColor}
+                    style={{ transform: [{ rotate: '15deg' }] }}
+                />
+            </View>
+            <View
+                style={{
+                    width: '75%',
+                }}
+            >
                 <Text
                     style={{
                         color: '#fafafa',
-                        maxWidth: '85%',
+                        fontWeight: 'bold',
                         maxHeight: 35,
                     }}
+                    numberOfLines={2}
                 >
                     {song.title}
                 </Text>

@@ -5,9 +5,37 @@ import { Text, Animated, View, StyleSheet } from 'react-native';
 import type { Song } from 'types/Song';
 
 export const CurrentSongTime = ({ song }: { song: Song }) => {
-    const { currentSongTime, passTime, isPlaying, currentSong, setTime } =
-        useGlobalStore();
+    const {
+        currentSongTime,
+        passTime,
+        isPlaying,
+        currentSong,
+        setTime,
+        config,
+    } = useGlobalStore();
     const progressAnim = useRef(new Animated.Value(0)).current;
+
+    const styles = StyleSheet.create({
+        container: {
+            alignItems: 'center',
+            flexDirection: 'row',
+            gap: 10,
+            maxWidth: '90%',
+        },
+        progressBar: {
+            height: 10,
+            width: '80%',
+            backgroundColor: '#3c3c3c',
+            borderRadius: 5,
+            overflow: 'hidden',
+            marginVertical: 10,
+        },
+        progress: {
+            height: '100%',
+            backgroundColor: config.mainColor,
+            borderRadius: 5,
+        },
+    });
 
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
@@ -18,6 +46,10 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
             }, 1000);
         }
 
+        if (isPlaying) {
+            setTime(currentSongTime);
+        }
+
         return () => {
             if (timer) clearInterval(timer);
         };
@@ -26,7 +58,7 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
     useEffect(() => {
         Animated.timing(progressAnim, {
             toValue: currentSongTime / song.duration,
-            duration: 500,
+            duration: 1000,
             useNativeDriver: false,
         }).start();
     }, [currentSongTime]);
@@ -34,7 +66,7 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
     useEffect(() => {
         setTime(0);
         progressAnim.setValue(0);
-    }, [song]);
+    }, [currentSong]);
 
     return (
         <View style={styles.container}>
@@ -60,25 +92,3 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        gap: 10,
-        maxWidth: '90%',
-    },
-    progressBar: {
-        height: 10,
-        width: '80%',
-        backgroundColor: '#3c3c3c',
-        borderRadius: 5,
-        overflow: 'hidden',
-        marginVertical: 10,
-    },
-    progress: {
-        height: '100%',
-        backgroundColor: '#005AFF',
-        borderRadius: 5,
-    },
-});

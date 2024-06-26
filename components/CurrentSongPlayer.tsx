@@ -8,7 +8,7 @@ import PlayIcon from 'assets/play.svg';
 import StopIcon from 'assets/pause.svg';
 
 export const CurrentSongPlayer = ({ song }: { song: Song }) => {
-    const { action, isPlaying } = useGlobalStore();
+    const { action, isPlaying, config } = useGlobalStore();
 
     return (
         <View
@@ -20,7 +20,7 @@ export const CurrentSongPlayer = ({ song }: { song: Song }) => {
                 backgroundColor: '#1c1c1c',
                 flexDirection: 'row',
                 borderTopWidth: 2,
-                borderTopColor: '#005AFF',
+                borderTopColor: config.mainColor,
                 gap: 15,
                 height: 100,
                 alignItems: 'center',

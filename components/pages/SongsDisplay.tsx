@@ -3,16 +3,18 @@ import { SongItem } from '@components/SongItems';
 import { useGlobalStore } from '@stores/useGlobalStore';
 import { useEffect } from 'react';
 
-export const SongDisplay = () => {
-    const { songs, loadAndSaveSongs } = useGlobalStore();
+const SongDisplay = () => {
+    const { songs, loadAndSaveSongs, isPlaying } = useGlobalStore();
 
     useEffect(() => {
         loadAndSaveSongs();
     }, []);
 
-    const songsArray = Array.from(songs.values()).map((song) => {
-        return song;
-    });
+    const songsArray = Array.from(songs.values())
+        .map((song) => {
+            return song;
+        })
+        .sort((a, b) => b.creationTime - a.creationTime);
 
     return (
         <FlatList
@@ -20,7 +22,7 @@ export const SongDisplay = () => {
                 gap: 10,
                 padding: 10,
                 backgroundColor: '#1c1c1c',
-                paddingBottom: 100,
+                paddingBottom: isPlaying ? 110 : 10,
             }}
             data={songsArray}
             renderItem={({ item }) => <SongItem song={item} />}
@@ -28,3 +30,5 @@ export const SongDisplay = () => {
         />
     );
 };
+
+export default SongDisplay;
