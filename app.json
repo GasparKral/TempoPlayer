@@ -1,27 +1,23 @@
 {
-  "expo": {
-    "name": "TempoPlayer",
-    "slug": "TempoPlayer",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "expo": {
+        "name": "TempoPlayer",
+        "slug": "TempoPlayer",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "userInterfaceStyle": "light",
+        "backgroundColor": "#1c1c1c",
+        "splash": {
+            "resizeMode": "contain",
+            "backgroundColor": "#1c1c1c"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "backgroundColor": "#1c1c1c"
+            }
+        },
+        "web": {}
     }
-  }
 }

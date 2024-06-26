@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { useGlobalStore } from '@stores/useGlobalStore';
+import { Header } from '@components/Header';
+import { CurrentSongPlayer } from '@components/CurrentSongPlayer';
+import { SongDisplay } from '@components/pages/SongsDisplay';
+import { PlaylistDisplay } from '@components/pages/PlaylistDisplay';
+
+const loadPage = ({ currentPage }: { currentPage: string }) => {
+    switch (currentPage) {
+        case 'songs':
+            return <SongDisplay />;
+        case 'playlists':
+            return <PlaylistDisplay />;
+        default:
+            return <SongDisplay />;
+    }
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const { loadAndSaveSongs, currentPage, currentSong } = useGlobalStore();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    useEffect(() => {
+        loadAndSaveSongs();
+    }, [loadAndSaveSongs]);
+
+    return (
+        <>
+            <Header />
+            {loadPage({ currentPage })}
+            {currentSong && <CurrentSongPlayer song={currentSong} />}
+        </>
+    );
+}
