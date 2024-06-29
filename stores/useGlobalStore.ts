@@ -31,6 +31,12 @@ import {
     CurrentPageSliceState,
 } from '@stores/createCurrentPageSlice';
 
+import {
+    createUISlice,
+    UISliceAccion,
+    UISliceState,
+} from '@stores/createUISlice';
+
 import { create, StateCreator } from 'zustand';
 import { saveSongs } from '@hooks/function/saveSongs';
 import { loadSongs } from '@hooks/function/loadSongs';
@@ -46,7 +52,9 @@ type GlobalStore = SongsSliceState &
     CurrentPageSliceState &
     CurrentPageSliceAccion &
     PlayListsSliceState &
-    PlayListsSliceAccion & {
+    PlayListsSliceAccion &
+    UISliceState &
+    UISliceAccion & {
         loadAndSaveSongs: () => Promise<void>;
         nextSong: () => Promise<void>;
     };
@@ -58,6 +66,7 @@ const createRootSlice: StateCreator<GlobalStore> = (set, get, api) => ({
     ...createCurrentSongSlice(set, get, api),
     ...createPlayListsSlice(set, get, api),
     ...createCurrentPageSlice(set, get, api),
+    ...createUISlice(set, get, api),
 
     loadAndSaveSongs: async () => {
         const { config, setSongs } = get();

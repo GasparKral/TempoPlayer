@@ -52,7 +52,7 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
     }, [currentSong, isPlaying]);
 
     useEffect(() => {
-        if (currentSongTime === Math.floor(song.duration)) {
+        if (currentSongTime >= Math.floor(song.duration)) {
             nextSong();
         }
 

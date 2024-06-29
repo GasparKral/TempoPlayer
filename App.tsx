@@ -1,9 +1,14 @@
+import 'react-native-gesture-handler';
 import type { Playlist } from 'types/Playlist';
-import { useEffect, useMemo } from 'react';
+
+import React, { useEffect, useMemo } from 'react';
+import { View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import { useGlobalStore } from '@stores/useGlobalStore';
 import { Header } from '@components/Header';
 import { CurrentSongPlayer } from '@components/CurrentSongPlayer';
-import { View } from 'react-native';
+import { ShowPlayLists } from '@components/ShowPlayLists';
 
 import SongDisplay from '@components/pages/SongsDisplay';
 import PlaylistDisplay from '@components/pages/PlaylistDisplay';
@@ -32,6 +37,7 @@ export default function App() {
         currentSong,
         setCurrentPlaylist,
         songs,
+        playListsUi,
     } = useGlobalStore();
 
     useEffect(() => {
@@ -51,14 +57,17 @@ export default function App() {
     }, [songs]);
 
     return (
-        <View
-            style={{
-                height: '100%',
-            }}
-        >
-            <Header />
-            {loadPage({ currentPage })}
-            {currentSong && <CurrentSongPlayer song={currentSong} />}
-        </View>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <View
+                style={{
+                    height: '100%',
+                }}
+            >
+                <Header />
+                {loadPage({ currentPage })}
+                {currentSong && <CurrentSongPlayer song={currentSong} />}
+                {playListsUi && <ShowPlayLists />}
+            </View>
+        </GestureHandlerRootView>
     );
 }

@@ -1,6 +1,7 @@
 import type { Song } from 'types/Song';
 
 import { TouchableOpacity, Text, View } from 'react-native';
+import { ShowPlayLists } from '@components/ShowPlayLists';
 import { timeFormat } from '@hooks/function/timeFormat';
 import { useGlobalStore } from '@stores/useGlobalStore';
 
@@ -16,11 +17,13 @@ export const SongItem = ({
     isPlaying: boolean;
     color: string;
 }) => {
-    const { action, config } = useGlobalStore();
+    const { action, config, showPlayListsUi } = useGlobalStore();
 
     return (
         <TouchableOpacity
             onPress={() => action(song)}
+            delayLongPress={100}
+            onLongPress={() => showPlayListsUi(true)}
             style={{
                 padding: 10,
                 backgroundColor: isPlaying
