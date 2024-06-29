@@ -2,7 +2,7 @@ import { FlatList } from 'react-native';
 import { PlayListItem } from '@components/PlayListItem';
 import { useGlobalStore } from '@stores/useGlobalStore';
 
-export const PlaylistDisplay = () => {
+const PlaylistDisplay = () => {
     const { playlists } = useGlobalStore();
 
     return (
@@ -13,3 +13,5 @@ export const PlaylistDisplay = () => {
         />
     );
 };
+
+export default PlaylistDisplay;

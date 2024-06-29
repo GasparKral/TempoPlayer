@@ -52,8 +52,8 @@ const readFiles = async (config: Config) => {
                     id: file.id,
                     title: file.filename
                         .replace(/\..*$/, '')
-                        .trim()
-                        .replaceAll('_', ' '), // Elimina la extensión del archivo para obtener el título
+                        .replaceAll('_', ' ')
+                        .trim(), // Elimina la extensión del archivo para obtener el título
                     artist: '<unknown>',
                     creationTime: file.creationTime,
                 });

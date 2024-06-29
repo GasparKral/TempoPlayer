@@ -4,7 +4,8 @@ import { useGlobalStore } from '@stores/useGlobalStore';
 import { useEffect } from 'react';
 
 const SongDisplay = () => {
-    const { songs, loadAndSaveSongs, isPlaying } = useGlobalStore();
+    const { songs, loadAndSaveSongs, isPlaying, config, currentSong } =
+        useGlobalStore();
 
     useEffect(() => {
         loadAndSaveSongs();
@@ -25,7 +26,13 @@ const SongDisplay = () => {
                 paddingBottom: isPlaying ? 110 : 10,
             }}
             data={songsArray}
-            renderItem={({ item }) => <SongItem song={item} />}
+            renderItem={({ item }) => (
+                <SongItem
+                    song={item}
+                    isPlaying={item.uri == currentSong?.uri}
+                    color={config.mainColor}
+                />
+            )}
             keyExtractor={(item) => item.id.toString()}
         />
     );
