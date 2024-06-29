@@ -51,9 +51,11 @@ const readFiles = async (config: Config) => {
                     uri: file.uri,
                     id: file.id,
                     title: file.filename
-                        .replace(/\..*$/, '')
+                        .replace('.mp3', '')
+                        .replace('[TubeRipper.com]', '')
+                        .replace(/api.*$/, '')
                         .replaceAll('_', ' ')
-                        .trim(), // Elimina la extensión del archivo para obtener el título
+                        .trim(),
                     artist: '<unknown>',
                     creationTime: file.creationTime,
                 });

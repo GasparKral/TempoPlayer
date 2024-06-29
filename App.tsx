@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import type { Playlist } from 'types/Playlist';
+import { useEffect, useMemo } from 'react';
 import { useGlobalStore } from '@stores/useGlobalStore';
 import { Header } from '@components/Header';
 import { CurrentSongPlayer } from '@components/CurrentSongPlayer';
@@ -25,11 +26,29 @@ const loadPage = ({ currentPage }: { currentPage: string }) => {
 };
 
 export default function App() {
-    const { loadAndSaveSongs, currentPage, currentSong } = useGlobalStore();
+    const {
+        loadAndSaveSongs,
+        currentPage,
+        currentSong,
+        setCurrentPlaylist,
+        songs,
+    } = useGlobalStore();
 
     useEffect(() => {
         loadAndSaveSongs();
     }, [loadAndSaveSongs]);
+
+    useMemo(() => {
+        const songsArray = Array.from(songs.values())
+            .map((song) => {
+                return song;
+            })
+            .sort((a, b) => b.creationTime - a.creationTime);
+
+        const initPlayList: Playlist = { songs: songsArray };
+
+        setCurrentPlaylist(initPlayList);
+    }, [songs]);
 
     return (
         <View

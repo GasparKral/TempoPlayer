@@ -48,6 +48,7 @@ type GlobalStore = SongsSliceState &
     PlayListsSliceState &
     PlayListsSliceAccion & {
         loadAndSaveSongs: () => Promise<void>;
+        nextSong: () => Promise<void>;
     };
 
 const createRootSlice: StateCreator<GlobalStore> = (set, get, api) => ({
@@ -63,6 +64,35 @@ const createRootSlice: StateCreator<GlobalStore> = (set, get, api) => ({
         const songs = await loadSongs(config);
         setSongs(songs);
         // await saveSongs(songs);
+    },
+
+    nextSong: async () => {
+        const { currentSong, currentPlaylist, replayType } = get();
+
+        if (currentPlaylist) {
+            let nextSongIndex: number | undefined;
+
+            if (replayType === 'random') {
+                nextSongIndex = Math.floor(
+                    Math.random() * currentPlaylist.songs.length
+                );
+            }
+            if (replayType === 'normal') {
+                nextSongIndex =
+                    currentPlaylist.songs.indexOf(currentSong as Song) + 1;
+            }
+            if (replayType === 'loop') {
+                nextSongIndex = currentPlaylist.songs.indexOf(
+                    currentSong as Song
+                );
+            }
+
+            if (nextSongIndex) {
+                const { action } = get();
+                const nextSong = currentPlaylist.songs[nextSongIndex];
+                await action(nextSong);
+            }
+        }
     },
 });
 

@@ -1,7 +1,13 @@
 import { useGlobalStore } from '@stores/useGlobalStore';
-import { ScrollView, View, TextInput, TouchableHighlight } from 'react-native';
+import {
+    ScrollView,
+    View,
+    TextInput,
+    TouchableHighlight,
+    Text,
+} from 'react-native';
 import { ListItem } from '@components/ConfigListItem';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import ColorPicker from '@components/ColorPicker';
 import PlusIcon from 'assets/plus.svg';
@@ -17,6 +23,7 @@ const ConfigDisplay = () => {
     } = useGlobalStore();
 
     const [blackListWord, setBlackListWord] = useState('');
+    const inputRef = useRef<TextInput>(null);
 
     return (
         <ScrollView
@@ -43,6 +50,15 @@ const ConfigDisplay = () => {
                     borderRadius: 5,
                 }}
             >
+                <Text
+                    style={{
+                        color: '#fafafa',
+                        fontWeight: 'bold',
+                        fontSize: 13,
+                    }}
+                >
+                    Palabras y signos para filtrar el nombre de las canciones
+                </Text>
                 {config.blackListWords.map((word) => (
                     <ListItem
                         key={word}
@@ -51,35 +67,39 @@ const ConfigDisplay = () => {
                         removeBlackListWord={removeBlackListWord}
                     />
                 ))}
-            </View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    borderColor: '#7c7c7c',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                }}
-            >
-                <TextInput
-                    style={{ color: '#fafafa' }}
-                    onChange={(e) => setBlackListWord(e.nativeEvent.text)}
-                    placeholder='Añadir palabra'
-                    placeholderTextColor={'#fafafa'}
-                ></TextInput>
-                <TouchableHighlight
-                    onPress={() => addBlackListWord(blackListWord)}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        borderColor: '#7c7c7c',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                    }}
                 >
-                    <PlusIcon
-                        width={24}
-                        height={24}
-                        color={'#fafafa'}
-                    />
-                </TouchableHighlight>
+                    <TextInput
+                        ref={inputRef}
+                        style={{ color: '#fafafa' }}
+                        onChange={(e) => setBlackListWord(e.nativeEvent.text)}
+                        placeholder='Añadir palabra'
+                        placeholderTextColor={'#fafafa'}
+                    ></TextInput>
+                    <TouchableHighlight
+                        onPress={() => {
+                            addBlackListWord(blackListWord);
+                            inputRef.current?.clear();
+                        }}
+                    >
+                        <PlusIcon
+                            width={24}
+                            height={24}
+                            color={'#fafafa'}
+                        />
+                    </TouchableHighlight>
+                </View>
             </View>
         </ScrollView>
     );

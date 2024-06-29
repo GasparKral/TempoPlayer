@@ -5,15 +5,11 @@ import { Text, Animated, View, StyleSheet } from 'react-native';
 import type { Song } from 'types/Song';
 
 export const CurrentSongTime = ({ song }: { song: Song }) => {
-    const {
-        currentSongTime,
-        passTime,
-        isPlaying,
-        currentSong,
-        setTime,
-        config,
-    } = useGlobalStore();
+    const { isPlaying, currentSong, config, nextSong, sound } =
+        useGlobalStore();
+
     const progressAnim = useRef(new Animated.Value(0)).current;
+    const [currentSongTime, setTime] = useState(0);
 
     const styles = StyleSheet.create({
         container: {
@@ -42,7 +38,7 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
 
         if (currentSong?.uri === song.uri && isPlaying) {
             timer = setInterval(() => {
-                passTime();
+                setTime((prev) => prev + 1);
             }, 1000);
         }
 
@@ -56,6 +52,10 @@ export const CurrentSongTime = ({ song }: { song: Song }) => {
     }, [currentSong, isPlaying]);
 
     useEffect(() => {
+        if (currentSongTime === Math.floor(song.duration)) {
+            nextSong();
+        }
+
         Animated.timing(progressAnim, {
             toValue: currentSongTime / song.duration,
             duration: 1000,

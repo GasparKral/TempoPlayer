@@ -21,7 +21,7 @@ export const createConfigSlice: StateCreator<
 > = (set, get) => ({
     config: {
         minDurationAudio: 45,
-        maxDurationAudio: 600,
+        maxDurationAudio: 3600,
         blackListWords: ['AUD', '%'],
         mainColor: '#005AFF',
     },
